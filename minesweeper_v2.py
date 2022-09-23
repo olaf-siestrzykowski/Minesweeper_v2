@@ -1,4 +1,3 @@
-import sys
 from tkinter import *
 import random
 import ctypes
@@ -29,9 +28,9 @@ class Cells():
 
     def left_click(self, event):
         if self.is_bomb:
-            self.cell_button_object.configure(bg="red") #not working
-            ctypes.windll.user32.MessageBoxW(0, "You clicked on a mine", "Game Over", 0)
-            sys.exit()
+            self.cell_button_object.configure(bg="red")
+            self.game_over()
+
         else:
             self.show_cell()
             if self.show_cell() == "":
@@ -40,11 +39,15 @@ class Cells():
                     cell_obj.cell_button_object.unbind("<Button-3>")
         self.cell_button_object.unbind("<Button-3>")
 
+    def game_over(self):
+        ctypes.windll.user32.MessageBoxW(0, "You clicked on a mine", "Game Over", 0)
+        sys.exit()
+
     def right_click(self, event):
 
         if self.is_flagged:
             self.is_flagged = False
-            self.cell_button_object.configure(bg="SystemButtonFace", image="")
+            self.cell_button_object.configure(bg="SystemButtonFace")
             self.cell_button_object.bind("<Button-1>", self.left_click)
             Cells.bomb_count += 1
             if Cells.bomb_count_label:
@@ -137,17 +140,17 @@ HEIGHT = 1000
 window = Tk()
 window.geometry(f"{WIDTH}x{HEIGHT}")
 window.title("Saper")
-window.config(bg="#FFE0BC")
+window.config(bg="#FF7A2F")
 
 top_frame = Frame(window, bg="#460000", width=WIDTH, height=100)
 top_frame.place(x=200, y=0)
 
-game_title = Label(top_frame, bg="#460000", fg="white", text=" Minesweeper Game", font=("consolas", 40))
+game_title = Label(top_frame, bg="#460000", fg="white", text=" Minesweeper Game ", font=("consolas", 67))
 game_title.grid(row=0, column=3)
 game_board = Frame(window)
 
 
-score_frame = Frame(window, bg="#FF7A2F", width=200, height=(HEIGHT-100))
+score_frame = Frame(window, bg="black", width=200, height=(HEIGHT-180))
 score_frame.place(x=0, y=120)
 
 for row in range(size):
